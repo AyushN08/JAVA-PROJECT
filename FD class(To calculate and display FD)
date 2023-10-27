@@ -1,0 +1,49 @@
+class FDInterestCalculator {
+  private double depositAmount;
+  private double interestRate;
+
+  public FDInterestCalculator(double depositAmount) {
+    this.depositAmount = depositAmount;
+    generateRandomInterestRate();
+  }
+
+  private void generateRandomInterestRate() {
+    Random random = new Random();
+
+    // Generate a random interest rate between 4% and 8% for FD.
+    interestRate = 4 + (random.nextDouble() * 4);
+  }
+
+  public double calculateMaturityAmount(int months) {
+    // Calculate maturity amount using the formula
+    double maturityAmount = depositAmount * (1 + (interestRate / 100) * (months / 12));
+    return maturityAmount;
+  }
+
+  public void displayFDDetails() {
+    System.out.println("Fixed Deposit Amount: Rs" + depositAmount);
+    System.out.println("Interest Rate: " + interestRate + "%");
+    System.out.println("Maturity Amount after 1 year: Rs" + calculateMaturityAmount(12));
+    System.out.println("Maturity Amount after 5 years: Rs" + calculateMaturityAmount(60));
+  }
+}
+
+class FDService {
+  public static void createFD() {
+    while (true) {
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("Enter the Fixed Deposit amount: Rs");
+      double fdAmount = scanner.nextDouble();
+      scanner.nextLine();
+
+      FDInterestCalculator fdCalculator = new FDInterestCalculator(fdAmount);
+      fdCalculator.displayFDDetails();
+
+      System.out.print("Do you want to create another Fixed Deposit? (y/n): ");
+      String anotherFD = scanner.nextLine().trim().toLowerCase();
+      if (!anotherFD.equals("y")) {
+        break; // Return to the main menu
+      }
+    }
+  }
+}
