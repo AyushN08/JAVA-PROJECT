@@ -1,0 +1,91 @@
+class LoanCalculator {
+  private double loanAmount;
+  private double interestRate;
+  private int loanDurationMonths;
+
+  public LoanCalculator(double loanAmount) {
+    this.loanAmount = loanAmount;
+    generateRandomInterestRateAndDuration();
+  }
+
+  private void generateRandomInterestRateAndDuration() {
+    Random random = new Random();
+
+    // Generate a random interest rate between 5% and 15%.
+    interestRate = 5 + (random.nextDouble() * 10);
+
+    // Generate a random loan duration between 12 and 60 months.
+    loanDurationMonths = 12 + random.nextInt(49);
+  }
+
+  public double calculateEMI() {
+    // Monthly interest rate
+    double monthlyInterestRate = interestRate / 12 / 100;
+
+    // Number of monthly payments
+    int numberOfPayments = loanDurationMonths;
+
+    // Calculate EMI using the formula
+    double emi = loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments) /
+        (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1);
+
+    return emi;
+  }
+
+  public void displayLoanDetails() {
+    System.out.println("Loan Amount: Rs" + loanAmount);
+    System.out.println("Interest Rate: " + interestRate + "%");
+    System.out.println("Loan Duration: " + loanDurationMonths + " months");
+    System.out.println("Monthly EMI: Rs" + calculateEMI());
+  }
+}
+
+class LoanService {
+  public static void provideLoan() {
+    while (true) {
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("Enter the loan amount: Rs");
+      double loanAmount = scanner.nextDouble();
+      scanner.nextLine();
+
+      LoanCalculator loanCalculator = new LoanCalculator(loanAmount);
+      loanCalculator.displayLoanDetails();
+
+      System.out.print("Do you want to apply for another loan? (y/n): ");
+      String anotherLoan = scanner.nextLine().trim().toLowerCase();
+      if (!anotherLoan.equals("y")) {
+        break; // Return to the main menu
+      }
+    }
+  }
+}
+
+class FDInterestCalculator {
+  private double depositAmount;
+  private double interestRate;
+
+  public FDInterestCalculator(double depositAmount) {
+    this.depositAmount = depositAmount;
+    generateRandomInterestRate();
+  }
+
+  private void generateRandomInterestRate() {
+    Random random = new Random();
+
+    // Generate a random interest rate between 4% and 8% for FD.
+    interestRate = 4 + (random.nextDouble() * 4);
+  }
+
+  public double calculateMaturityAmount(int months) {
+    // Calculate maturity amount using the formula
+    double maturityAmount = depositAmount * (1 + (interestRate / 100) * (months / 12));
+    return maturityAmount;
+  }
+
+  public void displayFDDetails() {
+    System.out.println("Fixed Deposit Amount: Rs" + depositAmount);
+    System.out.println("Interest Rate: " + interestRate + "%");
+    System.out.println("Maturity Amount after 1 year: Rs" + calculateMaturityAmount(12));
+    System.out.println("Maturity Amount after 5 years: Rs" + calculateMaturityAmount(60));
+  }
+}
