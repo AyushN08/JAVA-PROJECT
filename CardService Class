@@ -1,0 +1,28 @@
+class CardService {
+  public static void createCard(Details account) {
+    Scanner scanner = new Scanner(System.in);
+    float minimumBalance = 100.0f; // Define your minimum balance requirement here
+
+    if (account.balance >= minimumBalance) {
+      System.out.println("You are eligible to create a new credit/debit card.");
+
+      // Simulate card creation process
+      System.out.println("Creating your new credit/debit card...");
+      System.out.println("Your card has been created successfully.");
+      System.out.println("Card details: ");
+      generateCardNumber(account.aadharNo);
+
+      // Return to the main menu
+    } else {
+      System.out.println("You do not have the minimum balance required to create a card.");
+      System.out.println("Please maintain a balance of at least Rs" + minimumBalance + " to be eligible.");
+      // Return to the main menu
+    }
+  }
+
+  private static void generateCardNumber(String aadharNo) {
+    Random random=new Random();
+
+    long cardNumber=4000_0000_0000_0000L+random.nextLong();System.out.println("Card Number: "+cardNumber);
+  }
+}
