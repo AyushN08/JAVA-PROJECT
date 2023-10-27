@@ -1,0 +1,111 @@
+package PackageEngineering;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+class Details {
+  String name;
+  int age;
+  String aadharNo;
+  String phoneNo;
+  String emailId;
+  float balance;
+
+  Details(String name, int age, String aadharNo, String phoneNo, String emailId, float balance) {
+    this.name = name;
+    this.age = age;
+    this.aadharNo = aadharNo;
+    this.phoneNo = phoneNo;
+    this.emailId = emailId;
+    this.balance = balance;
+  }
+
+  void display() {
+    String format = "| %-15s | %-5d | %-12s | %-10s | %-20s | Rs%-10.2f |%n";
+    System.out.format(format, name, age, aadharNo, phoneNo, emailId, balance);
+  }
+}
+
+class Entry {
+  public static ArrayList<Details> accountList = new ArrayList<>();
+
+  public static void accountOpener() {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Kindly enter your details to open an account:");
+
+    System.out.print("Name: ");
+    String name = scanner.nextLine();
+
+    System.out.print("Age: ");
+    int age = scanner.nextInt();
+    scanner.nextLine(); // Consume the newline character left in the buffer
+
+    System.out.print("Aadhar number (12 digits): ");
+    String aadharNo = scanner.nextLine();
+    while (aadharNo.length() != 12) {
+      System.out.println("Aadhar number must have exactly 12 digits. Please try again.");
+      aadharNo = scanner.nextLine();
+    }
+
+    System.out.print("Phone number (10 digits): ");
+    String phoneNo = scanner.nextLine();
+    while (phoneNo.length() != 10) {
+      System.out.println("Phone number must have exactly 10 digits. Please try again.");
+      phoneNo = scanner.nextLine();
+    }
+
+    System.out.print("Email ID: ");
+    String emailId = scanner.nextLine();
+
+    System.out.print("Initial balance for your account: Rs");
+    float balance = scanner.nextFloat();
+
+    System.out.println("Your account has been created.");
+
+    // Add the account details to the list
+    accountList.add(new Details(name, age, aadharNo, phoneNo, emailId, balance));
+  }
+}
+
+class ATM {
+  public static void atmServices(Details account) {
+    Scanner scanner = new Scanner(System.in);
+    while (true) {
+      System.out.println("ATM Services for " + account.name + ":");
+      System.out.println("1. Deposit");
+      System.out.println("2. Withdraw");
+      System.out.println("3. Check Balance");
+      System.out.println("4. Exit to Main Menu");
+      System.out.print("Enter your choice: ");
+      int choice = scanner.nextInt();
+      scanner.nextLine();
+
+      switch (choice) {
+        case 1:
+          System.out.print("Enter the amount to deposit: Rs");
+          float depositAmount = scanner.nextFloat();
+          account.balance += depositAmount;
+          System.out.println("Deposited Rs" + depositAmount + ". Your new balance is: Rs" + account.balance);
+          break;
+        case 2:
+          System.out.print("Enter the amount to withdraw: Rs");
+          float withdrawAmount = scanner.nextFloat();
+          if (withdrawAmount <= account.balance) {
+            account.balance -= withdrawAmount;
+            System.out.println("Withdrawn Rs" + withdrawAmount + ". Your new balance is: Rs" + account.balance);
+          } else {
+            System.out.println("Insufficient balance.");
+          }
+          break;
+        case 3:
+          System.out.println("Your balance is: Rs" + account.balance);
+          break;
+        case 4:
+          return; // Return to the main menu
+        default:
+          System.out.println("Invalid choice. Please try again.");
+      }
+    }
+  }
+}
