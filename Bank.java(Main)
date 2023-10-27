@@ -1,0 +1,66 @@
+public class Bank {
+  public static void main(String[] args) {
+    Entry.accountOpener(); // Open an account
+    Scanner scanner = new Scanner(System.in);
+
+    while (true) {
+      System.out.println("Main Menu:");
+      System.out.println("1. ATM Services");
+      System.out.println("2. Apply for a Loan");
+      System.out.println("3. Create a Fixed Deposit");
+      System.out.println("4. Create a Credit/Debit Card");
+      System.out.println("5. Exit");
+      System.out.print("Enter your choice: ");
+      int choice = scanner.nextInt();
+      scanner.nextLine();
+
+      switch (choice) {
+        case 1:
+          if (Entry.accountList.size() > 0) {
+            System.out.println("Select your account:");
+            for (int i = 0; i < Entry.accountList.size(); i++) {
+              System.out.println(i + 1 + ". " + Entry.accountList.get(i).name);
+            }
+            System.out.print("Enter the account number: ");
+            int accountNumber = scanner.nextInt();
+            if (accountNumber >= 1 && accountNumber <= Entry.accountList.size()) {
+              ATM.atmServices(Entry.accountList.get(accountNumber - 1));
+            } else {
+              System.out.println("Invalid account number.");
+            }
+          } else {
+            System.out.println("No accounts available. Please open an account first.");
+          }
+          break;
+        case 2:
+          LoanService.provideLoan();
+          break;
+        case 3:
+          FDService.createFD();
+          break;
+        case 4:
+          if (Entry.accountList.size() > 0) {
+            System.out.println("Select your account:");
+            for (int i = 0; i < Entry.accountList.size(); i++) {
+              System.out.println(i + 1 + ". " + Entry.accountList.get(i).name);
+            }
+            System.out.print("Enter the account number: ");
+            int accountNumber = scanner.nextInt();
+            if (accountNumber >= 1 && accountNumber <= Entry.accountList.size()) {
+              CardService.createCard(Entry.accountList.get(accountNumber - 1));
+            } else {
+              System.out.println("Invalid account number.");
+            }
+          } else {
+            System.out.println("No accounts available. Please open an account first.");
+          }
+          break;
+        case 5:
+          System.out.println("Thank you for using our services.");
+          System.exit(0);
+        default:
+          System.out.println("Invalid choice. Please try again.");
+      }
+    }
+  }
+}
